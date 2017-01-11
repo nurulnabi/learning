@@ -56,7 +56,7 @@ db.connect('mongodb://localhost:27017/demo',function(err,db){
 	if(err) throw err;
 
 	//find one document in our collection
-	db.collection('things').findOne({},function(err,doc){
+	db.collection('things').find({},function(err,doc){
 		if(err) throw err;
 
 		//Print the result
@@ -66,3 +66,14 @@ db.connect('mongodb://localhost:27017/demo',function(err,db){
 		db.close();
 	});
 });
+
+//////////////////////////////////use express swig and mongo/////////
+
+var express = require('express'),
+	app = express(),
+	cons = require('cosolidate'),
+	db = require('mongodb').MongoClient,
+	server = require('mongodb').Server;
+
+app.engine('html',cons.swig);
+
