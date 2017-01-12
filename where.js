@@ -1,13 +1,19 @@
-function Err(res){
-	this.inRes = res;
-	this.toString = function(){
-		return this.inRes;
-	};
-}
+/*
+* @Author: MD NOORUL NABI ANSARI
+* @Date:   2017-01-12 18:44:21
+* @Last Modified by:   noor
+* @Last Modified time: 2017-01-12 18:44:27
+*/
+var Err = require('./utility/Err');
+var isObject = require('./utility/isObject');
 
 
 var where = function(list,obj){
 	var arr = [];				// will hold the extracted objects
+
+	if(!isObject(list)){		// if the list is not the array of objects
+		return list;
+	}
 	if(arguments.length != 2){	//if the number of arguments passed is less than 2 throw an error
 		throw new Err("Error: Kindly pass a list and an object");
 	}
@@ -19,7 +25,7 @@ var where = function(list,obj){
 		throw new Err("Error: Oject with no properties");
 	}
 
-	if(typeof obj === 'object' && obj != null){			//iteratively check wether any object in list has the values from obj
+	if(typeof obj === 'object' && obj != null && Array.isArray(obj) == false){			//iteratively check wether any object in list has the values from obj
 		var keys = Object.keys(obj);
 
 		list.forEach(item => {
@@ -35,8 +41,8 @@ var where = function(list,obj){
 			}
 		})
 		
-	}else{
-		return arr;
+	}else{					//else return the original list in case if the second argument is not an object
+		return list;
 	}
 	return arr;
 }
