@@ -206,7 +206,7 @@ module.exports =[
       "first": "Iris"
     },
     "age": 35,
-    "salary": 6549418
+    "salary": 654941858
   },
   {
     "fruit": "pineaple",
@@ -216,7 +216,7 @@ module.exports =[
       "last": "Matthews",
       "first": "Torres"
     },
-    "age": 38,
+    "age": 48,
     "salary": 3583188
   }
 ];
