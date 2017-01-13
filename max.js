@@ -2,7 +2,7 @@
 * @Author: MD NOORUL NABI ANSARI
 * @Date:   2017-01-12 18:51:39
 * @Last Modified by:   noor
-* @Last Modified time: 2017-01-13 12:26:34
+* @Last Modified time: 2017-01-13 13:31:21
 */
 
 
@@ -24,12 +24,8 @@ var isObject = require('./utility/isObject');
 var getNumField = require('./utility/getNumField');
 
 var max = function(list, field){		//this function accepts a list and a field in case list is array of obj
-	if(list.length == 0){				//if list is empty return -Infinity as max value
+	if(list.length == 0 || !Array.isArray(list)){				//if list is empty return -Infinity as max value
 		return -Infinity;
-	}
-	if(!Array.isArray(list)){		//if list isn't an array then either return '-Infinity' or an error
-		//return -Infinity;
-		throw new Err("Error: kindly provide an array of number or objects");
 	}
 		
 	var max = -Infinity;
