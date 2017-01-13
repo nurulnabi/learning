@@ -2,7 +2,7 @@
 * @Author: MD NOORUL NABI ANSARI
 * @Date:   2017-01-13 15:03:34
 * @Last Modified by:   noor
-* @Last Modified time: 2017-01-13 16:52:11
+* @Last Modified time: 2017-01-13 17:06:53
 */
 
 /*	
@@ -25,8 +25,10 @@ var indexBy = function(list,field){
 		keys = uniqueKeys(list);
 		console.log(keys);
 		keys.forEach(elem =>{
+			console.log(elem);
 			result[elem] = elem;
-		});		
+		});	
+		console.log(result);	
 		return result;
 	}
 	if(isObject(list)){
