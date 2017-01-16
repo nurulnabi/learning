@@ -2,19 +2,18 @@
 * @Author: noor
 * @Date:   2017-01-15 10:30:15
 * @Last Modified by:   noor
-* @Last Modified time: 2017-01-16 14:33:37
+* @Last Modified time: 2017-01-16 18:57:04
 */
+var _underscore = {};
 
-
-var Err = function(res){
+_underscore.Err = function(res){
 	this.inRes = res;
 	this.toString = function(){
 		return this.inRes;
 	};
 };
 
-
-var getNumField = function(Obj) {		//this function returns that field of the Obj which typeof is number
+_underscore.getNumField = function(Obj) {		//this function returns that field of the Obj which typeof is number
 	for(var key in Obj){
 		if(typeof Obj[key] === "number"){
 			return key;
@@ -23,8 +22,7 @@ var getNumField = function(Obj) {		//this function returns that field of the Obj
 	return undefined;
 };
 
-
-var isAdded = function(arr,val){
+_underscore.isAdded = function(arr,val){
 	for(var i in arr){
 		if(arr[i] == val){
 			return true;
@@ -33,8 +31,7 @@ var isAdded = function(arr,val){
 	return false;
 };
 
-
-var isNum = function(list){
+_underscore.isNum = function(list){
 	var status = true;
 	for(var key in list){
 		if(typeof list[key] != 'number'){
@@ -45,8 +42,7 @@ var isNum = function(list){
 	return status;
 };
 
-
-var isObject = function(list){
+_underscore.isObject = function(list){
 	status = true;
 	for(var key in list){
 		if( !(typeof list[key] === "object") && !(list[key] == null)){
@@ -57,8 +53,7 @@ var isObject = function(list){
 	return status;
 };
 
-
-var unqKeys = function(list){
+_underscore.unqKeys = function(list){
 	var result = [];
 
 	list.forEach(elem =>{			//get all unique element of the arrays
@@ -70,8 +65,7 @@ var unqKeys = function(list){
 	return result;
 };
 
-
-var contains = function(list,val,fromIndex = -1){
+_underscore.contains = function(list,val,fromIndex = -1){
 	if(val === null || val === undefined || val ===""){
 		return false;
 	}
@@ -84,8 +78,7 @@ var contains = function(list,val,fromIndex = -1){
 	}
 };
 
-
-var indexBy = function(list,field){		
+_underscore.indexBy = function(list,field){		
 	var result = {}
 	if(isNum(list)){
 		keys = uniqueKeys(list);
@@ -111,8 +104,7 @@ var indexBy = function(list,field){
 
 };
 
-
-var where = function(list,obj){
+_underscore.where = function(list,obj){
 	var arr = [];				// will hold the extracted objects
 
 	if(!isObject(list)){		// if the list is not the array of objects
@@ -152,8 +144,7 @@ var where = function(list,obj){
 };
 
 
-
-var size = function(list){
+_underscore.size = function(list){
 	if(list == null || list == undefined){
 		return 0;
 	}
@@ -164,8 +155,7 @@ var size = function(list){
 };
 
 
-
-var shuffle = function(list){
+_underscore.shuffle = function(list){
 	if(!isNum(list)){
 		return list;
 	}
@@ -179,8 +169,7 @@ var shuffle = function(list){
 };
 
 
-
-var pluck = function(list,field) {
+_underscore.pluck = function(list,field) {
 	var arr = [];
 	if(isObject(list) && list.length != 0){						//this function will only accept array of objects 
 		list.forEach(item => {
@@ -196,8 +185,7 @@ var pluck = function(list,field) {
 	return arr;
 };
 
-
-var reduce = function(list,iteratee,initVal){
+_underscore.reduce = function(list,iteratee,initVal){
 	var result="";
 	
 	isFunction(iteratee);	
@@ -212,14 +200,12 @@ var reduce = function(list,iteratee,initVal){
 
 	return result;
 }
-
-var isFunction = function(iteratee){
+_underscore.isFunction = function(iteratee){
 	if(typeof iteratee !== 'function'){
 		throw new TypeError("iteratee is not a function");
 	}
 }
-
-var getMemo = function(initVal,list){
+_underscore.getMemo = function(initVal,list){
 	var result = initVal ? 
 			initVal : isNum(list) ?	
 				0 : initVal == 0 ?
@@ -229,8 +215,7 @@ var getMemo = function(initVal,list){
 	return result;
 }
 
-
-var range = function(first,last,inc){
+_underscore.range = function(first,last,inc){
 	var result = [];
 	switch (arguments.length) {
 		case 0:
@@ -275,8 +260,7 @@ var range = function(first,last,inc){
 	return result;
 
 }
-
-var checkNum = function () {
+_underscore.checkNum = function () {
 	for(var key in arguments){
 		if(typeof arguments[key] !== 'number' || arguments[key] == NaN){
 			throw new Error("Invalid arguments");
@@ -284,8 +268,7 @@ var checkNum = function () {
 	}
 }
 
-
-var isEqual = function (first, second) {
+_underscore.isEqual = function (first, second) {
 	switch (customTypeof(first,second)) {
 		case false:
 			return false;
@@ -298,8 +281,7 @@ var isEqual = function (first, second) {
 			break;
 	}
 }
-
-var caseObject = function (first,second) {
+_underscore.caseObject = function (first,second) {
 	if(Array.isArray(first)==true && Array.isArray(second)==true){		//for array of primitives
 		var status = true;
 		if(isNum(first)==true && isNum(second)==true){
@@ -326,7 +308,7 @@ var caseObject = function (first,second) {
 }
 
 //compares two objects
-var compareObject = function (first,second) {
+_underscore.compareObject = function (first,second) {
 	var status = true;
 	if(Object.keys(first).length==Object.keys(second).length){
 		for(var key in first){
@@ -340,7 +322,8 @@ var compareObject = function (first,second) {
 	}
 	return status;
 }
-var customTypeof = function (first,second) {	//this will check typeof arguments if found same then return their type
+
+_underscore.customTypeof = function (first,second) {	//this will check typeof arguments if found same then return their type
 	if(typeof first === typeof second){
 		if(typeof first === undefined || typeof second === undefined){
 			return false;
@@ -354,3 +337,108 @@ var customTypeof = function (first,second) {	//this will check typeof arguments 
 	}
 	return false;
 }
+
+
+_underscore.union = function () {
+	var totalArr = arguments.length;
+	var arr=[];
+	for(var i=0; i<totalArr; i++){
+		if(isNum(arguments[i])){
+			makeSingleArr(arguments[i],arr);
+		}
+	}
+	return arr;
+}
+
+_underscore.makeSingleArr = function(arg,arr){
+	arg.forEach(function(val) {
+		if(arr.indexOf(val)==-1){
+			arr.push(val);
+		}
+	});
+}
+
+_underscore.zip = function() {
+	var arr = argumentsToArray(arguments);
+	var maxLen = getMaxLength(arr);
+	var len = arr.length;
+	var index = 0;
+	var result = [];
+	var subResult = [];
+	for(var i=0; i<maxLen; i++){
+		subResult = [];
+		arr.forEach(function(subArr){
+			subResult.push(subArr[i]);
+		})
+		result.push(subResult);
+	}
+	return result;
+};
+
+_underscore.getMaxLength = function(args){
+	var max = -Infinity;
+	args.forEach(function(arr){
+		if(arr.length>max){
+			max = arr.length;
+		}
+	})
+	return max;
+};
+
+_underscore.argumentsToArray = function(args){
+	var arr = [];
+	for(var key in args){
+		arr.push(args[key]);
+	}
+	return arr;
+};
+
+
+_underscore.unzip = function(arr) {
+	var maxLen = arr.length;
+	var len = arr[0].length;
+	var index = 0;
+	var result = [];
+	var subResult = [];
+	for(var i=0; i<len; i++){
+		subResult = [];
+		arr.forEach(function(subArr){
+			subResult.push(subArr[i]);
+		});
+		result.push(subResult);
+	}
+	return result;
+};
+
+_underscore.object = function(keys,values) {
+	var obj = {};
+	var len = Array.isArray(keys) ? keys.length : keys === undefined ? {} : keys.length;
+	values = values ? values : {};
+	for(var i=0; i<len; i++){
+		obj[keys[i]] = values[i];
+	}
+	return obj;
+};
+
+_underscore.omit = function(obj,iteratee){
+	obj = obj ? obj : {};
+	iteratee = iteratee ? iteratee : undefined;
+
+	if(typeof iteratee === 'function'){
+		for(var key in obj){
+				if(iteratee(obj[key],key,obj)){
+					delete obj[key];
+			}
+		}
+	}else if(Array.isArray(iteratee)){
+		iteratee.forEach(function(key){
+			delete obj[key];
+		});
+	}else{
+		delete obj[iteratee];
+	}
+	return obj;
+}
+
+
+module.exports = _underscore;	
