@@ -1,64 +1,46 @@
 /*
-* @Author: MD NOORUL NABI ANSARI
-* @Date:   2017-01-16 15:20:08
-* @Last Modified by:   noor
-* @Last Modified time: 2017-01-16 15:53:25
+* @Author: nurulnabi
+* @Date:   2017-01-16 23:53:30
+* @Last Modified by:   nurulnabi
+* @Last Modified time: 2017-01-17 00:16:58
 */
 
-
-
 var intersection = function () {
-	var totalArr = arguments.length;
-	var arr=[];
-	var firstTwo = [];
-	var i = getFirstTwo(arguments,firstTwo);
-	firstIntersect(firstTwo[0],firstTwo[1]);
-	for(i; i<totalArr; i++){
-		if(Array.isArray(arguments[i])){
-			makeSingleArr(arguments[i],arr);
+	var result = [];
+	if(arguments.length == 0 ){
+		return result;
+	}
+	if(arguments.length==1){
+		return arguments[0] ? singleArg(arguments[0]) : [];
+	}
+	result = firstTwo(arguments[0],arguments[1]);
+	for(var i=2; i<arguments.length; i++){
+		arr = arguments[i];
+		for(var key in arr){
+			if(result.indexOf(arr[key])>=0){
+				result.push(arr[key]);
+			}
 		}
 	}
-	return arr;
+	return result;
 }
 
-var getFirstTwo = function(arr,firstTwo){
-	var count = 0;
-	var i=0;
-	for(var i=0; i<arr.length; i++){
-		if(Array.isArray(arr[i])){
-			firstTwo.push(arr[i]);
-			count++
-		}
-		if(count>=2){
-			break;
-		}
+var singleArg = function(arr){
+	var result = [];
+	for(var key in arr){
+			result.push(arr[key]);
 	}
-	return i;
+	return result;
 }
 
-var makeSingleArr = function(arg,arr){
-	arg.forEach(function(val) {
-		if(arr.indexOf(val)>=0	){
-			arr.push(val);
+var firstTwo = function (arr1,arr2) {
+	var result = [];
+	for(var key in arr1){
+		if(arr2.indexOf(arr1[key])>=0){
+			result.push(arr1[key]);
 		}
-	});
+	}
+	return result;
 }
 
-var arr = [];
-var firstIntersect = function(first,second,arr,i,j){
-	if(i>first.length || j>second.length){
-		return;
-	}
-	if(first[i]==second[j]){
-		arr.push(first[i]);
-	}else{
-		i=i+1;
-		firstIntersect(first,second,arr,i,j);
-		j=j+1;
-		firstIntersect(first,second,arr,i,j);
-	}
-}
-firstIntersect([1,2,3,4,5,6],[2,4,5,7,8,9],arr,0,0);
-console.log(arr);
-// console.log( firstIntersect([1,2,3,4,5,6],[2,4,5,7,8,9]));
 module.exports = intersection;

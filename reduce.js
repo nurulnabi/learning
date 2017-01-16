@@ -2,7 +2,7 @@
 * @Author: MD NOORUL NABI ANSARI
 * @Date:   2017-01-12 15:04:25
 * @Last Modified by:   nurulnabi
-* @Last Modified time: 2017-01-16 21:52:45
+* @Last Modified time: 2017-01-17 00:34:38
 */
 
 
@@ -37,10 +37,10 @@ var getMemo = function(initVal,list){
 			initVal : isNum(list) ?	
 				0 : initVal == 0 ?
 					initVal:undefined;
-		if(result == undefined)
+		if(initVal == undefined)
 			throw new Error("You must provide initial value in case of list of Objects");
 	return result;
 }
 var arr = require('./arr');
-console.log(reduce(arr));
+console.log(reduce(arr,function(memo,val){return memo+val.company;},''));
 module.exports = reduce;

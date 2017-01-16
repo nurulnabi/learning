@@ -1,0 +1,26 @@
+range
+allKeys
+reduce
+contains
+max
+object
+omit
+shuffle
+size
+union
+zip
+unzip
+where
+indexBy
+pluck
+isEqual
+keyS
+property
+propertyOf
+invert
+pairs
+intersection
+uniqKeys	//alias unique
+initial
+first
+compact

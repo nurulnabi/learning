@@ -1,8 +1,8 @@
 /*
 * @Author: noor
 * @Date:   2017-01-15 10:30:15
-* @Last Modified by:   noor
-* @Last Modified time: 2017-01-16 18:57:04
+* @Last Modified by:   nurulnabi
+* @Last Modified time: 2017-01-17 02:02:49
 */
 var _underscore = {};
 
@@ -439,6 +439,166 @@ _underscore.omit = function(obj,iteratee){
 	}
 	return obj;
 }
+
+_underscore.allKeys = function(obj) {
+	obj = obj ? obj : {};
+	var tmpObj = obj;
+	var keys = [];
+	for(;tmpObj != Object.prototype; tmpObj=Object.getPrototypeOf(tmpObj)){
+		var arr = Object.getOwnPropertyNames(tmpObj);
+		arr.forEach(function(prop){
+			keys.push(prop);
+		});
+	}
+
+	return keys;
+}
+
+_underscore.keyS = function(obj) {
+	obj = obj ? obj : {};
+	return Object.getOwnPropertyNames(obj);
+}
+
+
+_underscore.property = function (prop) {
+ 	return function(obj){
+ 		obj = obj ? obj : {};
+ 		return obj[prop];
+ 	};
+ }
+
+ _underscore.propertyOf = function (obj) {
+ 	obj = obj ? obj : {};
+ 	return function(prop){
+ 		return obj[prop];
+ 	};
+ }
+
+
+_underscore.invert = function (obj) {
+	obj = obj ? obj : {};
+	var result = {};
+	if(typeof obj !== 'object'){
+		return result;
+	}
+	for(var key in obj){
+		result[obj[key]] = key;
+	}
+	return result;
+}
+
+
+_underscore.pairs = function(obj){
+	obj = obj ? obj : {};
+	var result = [];
+	var subResult = [];
+	if(typeof obj === 'object'){
+		for(var key in obj){
+			subResult = [];
+			subResult.push(key,obj[key]);
+			result.push(subResult);
+		}
+
+	}
+	return result;
+}
+
+
+_underscore.intersection = function () {
+	var result = [];
+	if(arguments.length == 0 ){
+		return result;
+	}
+	if(arguments.length==1){
+		return arguments[0] ? singleArg(arguments[0]) : [];
+	}
+	result = firstTwo(arguments[0],arguments[1]);
+	for(var i=2; i<arguments.length; i++){
+		arr = arguments[i];
+		for(var key in arr){
+			if(result.indexOf(arr[key])>=0){
+				result.push(arr[key]);
+			}
+		}
+	}
+	return result;
+}
+
+
+_underscore.singleArg = function(arr){
+	var result = [];
+	for(var key in arr){
+			result.push(arr[key]);
+	}
+	return result;
+}
+
+_underscore.firstTwo = function (arr1,arr2) {
+	var result = [];
+	for(var key in arr1){
+		if(arr2.indexOf(arr1[key])>=0){
+			result.push(arr1[key]);
+		}
+	}
+	return result;
+}
+
+
+_underscore.initial = function(array, n) {
+	var result = [];
+	for(var i=0; i<=Math.max(0,array.length-(n==null ? 1 : n));i++){
+		result.push(array[i]);
+	}
+	return result;
+};
+
+
+_underscore.initial = function(array, n) {
+	var result = [];
+	if(array == null){
+		return undefined;
+	}
+	for(var i=0; i<Math.max(0,array.length-(n==null ? 0 : n));i++){
+		result.push(array[i]);
+	}
+	return result;
+};
+
+_underscore.first = function(arr,n){
+	if(n==null){
+		return arr ? arr[0] : undefined;
+	}
+	return arr == null  ? undefined : initial(arr,arr.length-n);
+};
+
+
+_underscore.compact = function(arr){
+	var result = [];
+	if(arr==null){	return void 0;	}
+	for(var key in arr){
+		switch (arr[key]) {
+			case null:
+				break;
+			case undefined:
+				break;
+			case "":
+				break;
+			case NaN:
+				break;
+			case 0:
+				break;
+			case false:
+				break;
+			default:
+				result.push(arr[key]);
+				break;
+		}
+	}
+	return result;
+};
+
+
+
 
 
 module.exports = _underscore;	
