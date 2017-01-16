@@ -2,9 +2,13 @@
 * @Author: MD NOORUL NABI ANSARI
 * @Date:   2017-01-12 15:04:25
 * @Last Modified by:   nurulnabi
-* @Last Modified time: 2017-01-16 21:48:46
+* @Last Modified time: 2017-01-16 21:42:20
 */
 
+/*
+*	this program reduces the array into single value
+*
+*/
 
 var isNum = require('./utility/isNum');
 var isObject = require('./utility/isObject');
