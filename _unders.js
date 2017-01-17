@@ -2,7 +2,7 @@
 * @Author: noor
 * @Date:   2017-01-15 10:30:15
 * @Last Modified by:   noor
-* @Last Modified time: 2017-01-17 15:01:56
+* @Last Modified time: 2017-01-17 16:59:14
 */
 var _underscore = {};
 
@@ -794,10 +794,170 @@ _underscore.sortedIndex = function (list,value,iteratee) {
 };
 
 
+_underscore.isEmpty = function(obj) {
+	return Object.keys(obj).length == 0 ? true : false;
+};
 
 
 
+_underscore.isNumber = function(val){
+	return typeof val === 'number';
+};
 
 
+_underscore.isBoolean = function(val){
+	return typeof val === 'boolean';
+};
+
+
+_underscore.isString = function(val){
+	return typeof val === 'string';
+};
+
+
+_underscore.isNull = function(val){
+	return val === null;
+};
+
+
+_underscore.isUndefined = function(val){
+	return val === undefined;
+}
+
+
+_underscore.isArray = function(val){
+	return Array.isArray(val);
+};
+
+
+_underscore.isObject = function(obj){
+	var type = typeof obj;
+	return type === 'function' || type === 'object' && !!obj;
+};
+
+
+_underscore.isMatch = _underscore.compareObjILen;
+
+_underscore.has = function(obj,key){
+	obj = obj ? obj : {};
+	return Object.keys(obj).indexOf(key) == -1 ? false : true;
+};
+
+
+_underscore.without = function() {
+	var list = arguments[0] ? arguments[0] : [];
+	var remvList = [];
+	for(var i=1; i<arguments.length; i++){
+		remvList.push(arguments[i]);
+	}
+	for(var i=0; i<remvList.length; i++){
+		rm = list.indexOf(remvList[i]);
+		while(rm>-1){					//repeatedly remove the desired value
+			list.splice(rm,1);
+			rm = list.indexOf(remvList[i]);
+		}
+	}
+	return list;
+};
+
+
+_underscore.rest = function(list,index) {
+	list = list ? list : [];
+	index = index ? index : 0;
+	var result = [];
+	for(var i=index; i<list.length; i++){
+		result.push(list[i]);
+	}
+	return result;
+}
+
+
+_underscore.sample = function(list,num) {
+	list = list ? list : [];
+	num = num ? num : 1;
+
+	var result = [];
+	var subResult = [];
+	for(var i=num; i>0; i--){
+		var index = Math.floor(Math.random()*len);
+		for(;;){					//this chooses unique value to be inserted in result
+			if(subResult.indexOf(list[index]) == -1){		//wether this value has been inserted on not
+				subResult.push(list[index]);
+				break;
+			}
+			var index = Math.floor(Math.random()*len);
+		}
+	}
+	for(var i=0; i<subResult.length; i++){
+		result.push(subResult[i]);
+	}
+
+	return result;
+};
+
+
+_underscore.clone = function(obj) {
+	obj = obj ? obj : {};
+	var keys = Object.keys(obj);
+	var newObj = {};
+	keys.forEach(function(k){
+		newObj[k] = obj[k];
+	})
+	return newObj;
+};
+
+_underscore.values = function(obj) {
+	obj = obj ? obj : {};
+	var result = [];
+	for(var key in obj){
+		result.push(obj[key])
+	}
+	return result;
+};
+
+
+_underscore.min = function(list, field){		//this function accepts a list and a field in case list is array of obj
+	list = list ? list : [];
+	if(list.length == 0 || !Array.isArray(list)){				//if list is empty return +Infinity as min value
+		return +Infinity;
+	}
+		
+	var min = +Infinity;
+	if (isNum(list)) {
+		list.forEach(num => {
+			if(num<min){
+				min = num;
+			}
+		})
+	}
+
+
+	var minObj = {};		//hold the min vlaued object
+		minObj[field] = +Infinity;
+	if(isObject(list)){
+		if(field != null){
+			list.forEach(elem =>{		//in case if any object is not having 'field' it will ignore that obj
+				if(elem[field] != undefined){
+					minObj = elem[field] < minObj[field] ? elem : minObj;
+					 
+				}
+			});
+		}else{
+			var tempF = getNumField(list[0]);		// in case the user forgot to pass the field 
+			minObj[tempF] = +Infinity;									// choose first field which typeof is 'number' return that
+			list.forEach(elem =>{		//in case if any object is not having 'field' it will ignore that obj
+				if(elem[tempF] != undefined){
+					minObj = elem[tempF] < minObj[tempF] ? elem : minObj;
+				}
+			});
+		}
+
+		return minObj;
+	}
+
+
+	return min;
+};
 
 module.exports = _underscore;	
+

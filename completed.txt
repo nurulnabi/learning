@@ -21,7 +21,7 @@ invert
 pairs
 intersection
 uniqKeys	//alias unique
-initial
+initial	
 first
 compact
 find
@@ -31,3 +31,18 @@ lastIndexOf
 findLastIndex
 sortedIndex
 isEmpty
+isNumber
+isBool
+isNull
+isString
+isUndefined
+isArray
+isObject
+isMatch
+has
+without
+rest
+sample
+clone
+values
+min
