@@ -2,7 +2,7 @@
 * @Author: MD NOORUL NABI ANSARI
 * @Date:   2017-01-16 10:38:20
 * @Last Modified by:   noor
-* @Last Modified time: 2017-01-16 13:31:06
+* @Last Modified time: 2017-01-17 10:54:54
 */
 
 var isNum = require('./utility/isNum');
@@ -45,7 +45,7 @@ var caseObject = function (first,second) {
 		}
 		return status;
 	}else{						//for objects
-		return compareObject(frist,second);
+		return compareObject(first,second);
 	}
 }
 

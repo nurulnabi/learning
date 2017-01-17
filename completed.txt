@@ -24,3 +24,10 @@ uniqKeys	//alias unique
 initial
 first
 compact
+find
+findWhere
+indexOf
+lastIndexOf
+findLastIndex
+sortedIndex
+isEmpty

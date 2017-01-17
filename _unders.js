@@ -1,8 +1,8 @@
 /*
 * @Author: noor
 * @Date:   2017-01-15 10:30:15
-* @Last Modified by:   nurulnabi
-* @Last Modified time: 2017-01-17 02:02:49
+* @Last Modified by:   noor
+* @Last Modified time: 2017-01-17 15:01:56
 */
 var _underscore = {};
 
@@ -596,6 +596,205 @@ _underscore.compact = function(arr){
 	}
 	return result;
 };
+
+
+_underscore.reduceRight = function(list,iteratee,memo){
+	if(arguments.length<3){
+		throw new Error("You must provide atleast three arguments");
+	}
+	var len = list.length;
+	var result = memo;
+	for(var i=len-1; i>=0; i--){
+		console.log(list[i]);
+		result = iteratee(result,list[i]);
+	}
+	return result;
+};
+
+
+_underscore.reduceLeft = function(list,iteratee,memo){
+	if(arguments.length<3){
+		throw new Error("You must provide atleast three arguments");
+	}
+	var len = list.length;
+	var result = memo;
+	for(var i=0; i<len; i++){
+		console.log(list[i]);
+		result = iteratee(result,list[i]);
+	}
+	return result;
+};
+
+
+
+_underscore.find = function(list,iteratee) {
+	if(typeof iteratee !== 'function' || !Array.isArray(list)){
+		return void 0;
+	}
+	for(var i=0; i<list.length; i++){
+		if(iteratee(list[i])){
+			return list[i];
+			break;
+		}
+	}
+
+	return undefined;
+};
+
+
+_underscore.find = function(list,iteratee) {
+	if(!Array.isArray(list)){
+		return void 0;
+	}
+	if(typeof iteratee === 'function'){
+		for(var i=0; i<list.length; i++){
+			if(iteratee(list[i])){
+				return list[i];
+				break;
+			}	
+		}
+	}else{						//in case of iteratee is an object
+		for(var i=0; i<list.length; i++){
+			if(compareObjILen(iteratee,list[i])){
+				return list[i];
+			}
+		}
+	}
+	return undefined;
+};
+
+
+_underscore.findWhere = function(list,iteratee) {
+	if(!Array.isArray(list)){
+		return void 0;
+	}
+	if(typeof iteratee === 'function'){
+		for(var i=0; i<list.length; i++){
+			if(iteratee(list[i])){
+				return i;
+				break;
+			}	
+		}
+	}else{						//in case of iteratee is an object
+		for(var i=0; i<list.length; i++){
+			if(compareObjILen(iteratee,list[i])){
+				return i;
+			}
+		}
+	}
+	return undefined;
+};
+
+
+_underscore.compareObjILen = function (first,second) {
+	var status = true;
+	for(var key in first){
+		if(first[key] !== second[key]){
+			status = false;
+			break;
+		}
+	}
+	return status;
+};
+
+
+_underscore.indexOf = function (list,val) {
+	list = list ? list : [];
+	if(val == null){
+		return -1;
+	}
+
+	for(var key in list){
+		elem = list[key];
+		if(typeof elem === 'object'){			//in case list is array of objects
+			if(compareObject(val,elem)){
+				return key;
+			}
+		}
+		if(elem === val){
+			return key;
+		}
+	}
+	return -1;
+};
+
+
+_underscore.lastIndexOf = function (list,val) {
+	list = list ? list : [];
+	if(val == null){
+		return -1;
+	}
+	var lastKey = -1;
+	for(var key in list){
+		elem = list[key];
+		if(typeof elem === 'object'){			//in case list is array of objects
+			if(compareObject(val,elem)){
+				lastKey = key;
+			}
+		}
+		if(elem === val){
+			lastKey = key;
+		}
+	}
+	return lastKey;
+};
+
+
+
+_underscore.findLastIndexOf = function (list,val) {
+	list = list ? list : [];
+	if(val == null){
+		return -1;
+	}
+	var lastKey = -1;
+	for(var key in list){
+		elem = list[key];
+		if(typeof elem === 'object'){			//in case list is array of objects
+			if(compareObjILen(val,elem)){
+				lastKey = key;
+			}
+		}
+		if(elem === val){
+			lastKey = key;
+		}
+	}
+	return list[lastKey];
+};
+
+
+_underscore.sortedIndex = function (list,value,iteratee) {
+	if(list == null || value == null){
+		return undefined;
+	}
+
+	if(typeof iteratee !== 'function'){
+		list  = isObject(list) ? pluck(list,iteratee) : list;
+		return binarySearch(list,value[iteratee]);	
+	}else {
+		return iteratee(list,value);
+	}
+
+	function binarySearch(list,value){
+		var low  = 0,
+			high = list.length-1;
+		var mid;
+		while(low<=high){
+			mid = Math.floor((low+high)/2);
+			if(list[mid]<=value && list[mid+1]>=value){
+				return mid+1;
+			}else if(list[mid]<value) {
+				low = mid+1;
+			}else {
+				high = mid-1; 
+			}
+
+		}
+		return !low ? low : high;		//in case if location is either end
+	}
+};
+
+
+
 
 
 
