@@ -2,7 +2,7 @@
 * @Author: MD NOORUL NABI ANSARI
 * @Date:   2017-01-12 18:51:39
 * @Last Modified by:   noor
-* @Last Modified time: 2017-01-17 16:53:26
+* @Last Modified time: 2017-01-18 10:25:04
 */
 
 
@@ -65,5 +65,11 @@ var max = function(list, field){		//this function accepts a list and a field in 
 
 	return max;
 };
+
+var arr = require('./arr');
+var num =require('./num');
+
+console.log(max(num));
+console.log(max(arr,'age'));
 
 module.exports = max;

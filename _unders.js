@@ -1,8 +1,8 @@
 /*
 * @Author: noor
 * @Date:   2017-01-15 10:30:15
-* @Last Modified by:   nurulnabi
-* @Last Modified time: 2017-01-18 08:41:01
+* @Last Modified by:   noor
+* @Last Modified time: 2017-01-18 11:17:43
 */
 
 var _underscore = {};
@@ -56,13 +56,12 @@ _underscore.isObject = function(list){
 
 _underscore.unqKeys = function(list){
 	var result = [];
-
+	// if(!_underscore.isNum(list)) return result;
 	list.forEach(elem =>{			//get all unique element of the arrays
-		if(!isAdded(result,elem)){
+		if(!_underscore.isAdded(result,elem)){
 			result.push(elem);
 		}
 	});
-	console.log(result);
 	return result;
 };
 
@@ -75,14 +74,20 @@ _underscore.contains = function(list,val,fromIndex = -1){
  		return idx>fromIndex ? true: false;		
 	}
 	if(_underscore.isObject(list)){				// this will handle when list is array of objects
-		return false;
+		var i = fromIndex == -1 ? 0 : fromIndex;
+		for(; i<list.length; i++){
+			if(_underscore.compareObject(val,list[i])){
+				return true;
+			}
+		}
 	}
+	return false;
 };
 
-_underscore.indexBy = function(list,field){		
+_underscore.indexBy = function(list,field){			
 	var result = {}
 	if(_underscore.isNum(list)){
-		keys = uniqueKeys(list);
+		keys = _underscore.uniqueKeys(list);
 		console.log(keys);
 		keys.forEach(elem =>{
 			console.log(elem);
@@ -95,7 +100,7 @@ _underscore.indexBy = function(list,field){
 		if(field != null || field != undefined){
 			list.forEach(elem =>{
 				keys = Object.keys(result);
-				if(!isAdded(keys,elem[field])){
+				if(!_underscore.isAdded(keys,elem[field])){
 					result[elem[field]] = elem;	
 				}
 			});
@@ -111,15 +116,15 @@ _underscore.where = function(list,obj){
 	if(!_underscore.isObject(list)){		// if the list is not the array of objects
 		return list;
 	}
-	if(arguments.length != 2){	//if the number of arguments passed is less than 2 throw an error
-		throw new Err("Error: Kindly pass a list and an object");
+	if(arguments.length < 2){	//if the number of arguments passed is less than 2 throw an error
+		throw new _underscore.Err("Error: Kindly pass a list and an object");
 	}
 
 	if(!Array.isArray(list)){		// first argument must an array type 
-		throw new Err("TypeError: list is not an array");
+		throw new _underscore.Err("TypeError: list is not an array");
 	}
 	if(Object.keys(obj).length == 0){
-		throw new Err("Error: Oject with no properties");
+		throw new _underscore.Err("Error: Oject with no properties");
 	}
 
 	if(typeof obj === 'object' && obj != null && Array.isArray(obj) == false){			//iteratively check wether any object in list has the values from obj
@@ -520,9 +525,9 @@ _underscore.intersection = function () {
 		return result;
 	}
 	if(arguments.length==1){
-		return arguments[0] ? singleArg(arguments[0]) : [];
+		return arguments[0] ? _underscore.singleArg(arguments[0]) : [];
 	}
-	result = firstTwo(arguments[0],arguments[1]);
+	result = _underscore.firstTwo(arguments[0],arguments[1]);
 	for(var i=2; i<arguments.length; i++){
 		arr = arguments[i];
 		for(var key in arr){
@@ -546,7 +551,7 @@ _underscore.singleArg = function(arr){		//convert the arr into single arr
 _underscore.firstTwo = function (arr1,arr2) {
 	var result = [];
 	for(var key in arr1){
-		if(arr2.indexOf(arr1[key])>=0){
+		if(arr2.indexOf(arr1[key])>=0 && result.indexOf(arr1[key]) == -1){
 			result.push(arr1[key]);
 		}
 	}
@@ -831,7 +836,16 @@ _underscore.isObject = function(obj){
 };
 
 
-_underscore.isMatch = _underscore.compareObjILen;
+_underscore.isMatch = function (first,second) {
+	var status = true;
+	for(var key in second){
+		if(first[key] !== second[key]){
+			status = false;
+			break;
+		}
+	}
+	return status;
+};
 
 _underscore.has = function(obj,key){
 	obj = obj ? obj : {};
@@ -873,6 +887,7 @@ _underscore.sample = function(list,num) {
 
 	var result = [];
 	var subResult = [];
+	var len = list.length;
 	for(var i=num; i>0; i--){
 		var index = Math.floor(Math.random()*len);
 		for(;;){					//this chooses unique value to be inserted in result
@@ -926,6 +941,7 @@ _underscore.min = function(list, field){		//this function accepts a list and a f
 		})
 	}
 
+	if(min < +Infinity)	return min;
 
 	var minObj = {};		//hold the min vlaued object
 		minObj[field] = +Infinity;
@@ -952,6 +968,50 @@ _underscore.min = function(list, field){		//this function accepts a list and a f
 
 
 	return min;
+};
+
+
+_underscore.max = function(list, field){		//this function accepts a list and a field in case list is array of obj
+	list = list ? list : [];
+	if(list.length == 0 || !Array.isArray(list)){				//if list is empty return -Infinity as max value
+		return -Infinity;
+	}
+		
+	var max = -Infinity;
+	if (_underscore.isNum(list)) {
+		list.forEach(num => {
+			if(num>max){
+				max = num;
+			}
+		})
+	}
+	if(max > -Infinity)	return max;
+
+	var maxObj = {};		//hold the max vlaued object
+		maxObj[field] = -Infinity;
+	if(_underscore.isObject(list)){
+		if(field != null){
+			list.forEach(elem =>{		//in case if any object is not having 'field' it will ignore that obj
+				if(elem[field] != undefined){
+					maxObj = elem[field] > maxObj[field] ? elem : maxObj;
+					 
+				}
+			});
+		}else{
+			var tempF = _underscore.getNumField(list[0]);		// in case the user forgot to pass the field 
+			maxObj[tempF] = -Infinity;									// choose first field which typeof is 'number' return that
+			list.forEach(elem =>{		//in case if any object is not having 'field' it will ignore that obj
+				if(elem[tempF] != undefined){
+					maxObj = elem[tempF] > maxObj[tempF] ? elem : maxObj;
+				}
+			});
+		}
+
+		return maxObj;
+	}
+
+
+	return max;
 };
 
 module.exports = _underscore;	
