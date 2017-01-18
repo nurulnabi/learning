@@ -1,8 +1,8 @@
 /*
 * @Author: noor
 * @Date:   2017-01-15 10:30:15
-* @Last Modified by:   noor
-* @Last Modified time: 2017-01-17 19:28:49
+* @Last Modified by:   nurulnabi
+* @Last Modified time: 2017-01-18 08:41:01
 */
 
 var _underscore = {};
@@ -187,6 +187,7 @@ _underscore.pluck = function(list,field) {
 };
 
 _underscore.reduce = function(list,iteratee,initVal){
+	if(!Array.isArray(list))	return void 0;
 	var result="";
 	
  	_underscore.isFunction(iteratee);	
@@ -194,9 +195,11 @@ _underscore.reduce = function(list,iteratee,initVal){
 		return typeof initVal === 'number' ? initVal != NaN ? initVal : null:null;
 	}else {
 		result = _underscore.getMemo(initVal,list);
-		list.forEach( function(element,index) {
-			result = iteratee(result,element,index,list);
-		});
+		for(var i=0; i<list.length;i++){
+			if(i==0 && _underscore.isNum(list) && initVal ==null ){}
+			else
+				result = iteratee(result,list[i],i,list);
+		}
 	}
 
 	return result;
@@ -213,7 +216,7 @@ _underscore.isFunction = function(iteratee){
 _underscore.getMemo = function(initVal,list){
 	var result = initVal ? 
 			initVal : _underscore.isNum(list) ?	
-				0 : initVal == 0 ?
+				list[0] : initVal == 0 ?
 					initVal:undefined;
 		if(result == undefined)
 			throw new Error("You must provide initial value in case of list of Objects");
@@ -230,7 +233,7 @@ _underscore.range = function(first,last,inc){
 			{
 				_underscore.checkNum(first);
 				var val = -1;
-				while(val ++< first)	result.push(val);
+				while(val ++< first-1)	result.push(val);
 			}
 			break;
 		case 2:
@@ -449,7 +452,9 @@ _underscore.allKeys = function(obj) {
 	obj = obj ? obj : {};
 	var tmpObj = obj;
 	var keys = [];
+	if(typeof obj !== 'object')	return keys;
 	for(;tmpObj != Object.prototype; tmpObj=Object.getPrototypeOf(tmpObj)){
+		// if(tmpObj == Object.prototype || tmpObj == String.prototype || tmpObj == Number.prototype || tmpObj == Function.prototype)	break;
 		var arr = Object.getOwnPropertyNames(tmpObj);
 		arr.forEach(function(prop){
 			keys.push(prop);
@@ -753,7 +758,7 @@ _underscore.findLastIndexOf = function (list,val) {
 
 
 _underscore.sortedIndex = function (list,value,iteratee) {
-	if(list == null || value == null){
+	if(list == null || value == null || iteratee == null){
 		return undefined;
 	}
 
